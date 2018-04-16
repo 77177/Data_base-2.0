@@ -35,12 +35,12 @@ public:
 	}
 	void get_emp_number()
 	{
-		cout << "Enter the emplyee number" << endl;
+		cout << "Enter the employee number" << endl;
 		cin >> emp_number;
 	}
 	void get_name()
 	{
-		cout << "Enter the emplyee name" << endl;
+		cout << "Enter the employee name" << endl;
 		cin >> fname >> lname;
 	}
 	char* ret_fname()
@@ -90,24 +90,32 @@ void save_to_file(list<entry> &DB)
 {
 	
 	
-	ofstream fout("data_base1.txt", ios::binary);
-	if (fout.is_open())
-	{
-		int size_db = DB.size();
-		fout.write((char*)&size_db, sizeof(int));
-		auto itr = DB.begin();
-		for (; itr != DB.end(); ++itr)
+	ofstream fout("data_base1.txt", ios::binary | ios::trunc);
+	try {
+		if (fout.is_open())
 		{
-			int en;
-			char* fnm;
-			char* lnm;
-			en = itr->ret_emp_number();
-			fnm = itr->ret_fname();
-			lnm = itr->ret_lname();
-			fout.write((char*)&en, sizeof(int));
-			fout.write((char*)fnm, 20);
-			fout.write((char*)lnm, 20);
+			int size_db = DB.size();
+			fout.write((char*)&size_db, sizeof(int));
+			auto itr = DB.begin();
+			for (; itr != DB.end(); ++itr)
+			{
+				int en;
+				char* fnm;
+				char* lnm;
+				en = itr->ret_emp_number();
+				fnm = itr->ret_fname();
+				lnm = itr->ret_lname();
+				fout.write((char*)&en, sizeof(int));
+				fout.write((char*)fnm, 20);
+				fout.write((char*)lnm, 20);
+			}
 		}
+		else
+		throw 1;
+	}
+	catch (int n)
+	{
+		cout << "save_to_file_function_fail... ERROR" << n << endl;
 	}
 	fout.close();
 }
@@ -172,7 +180,10 @@ int main()
 		{
 			main.clear();
 			ofstream clear_up_file("data_base1.txt", ios::trunc);
-			cout << "Data base file cleared." << endl;
+			if (clear_up_file.is_open())
+			{
+				cout << "Data base file cleared." << endl;
+			}
 			clear_up_file.close();
 			_getch();
 		}
