@@ -67,17 +67,20 @@ list<entry> get_from_file()
 	
 	ifstream fin("data_base1.txt", ios::binary );
 	list<entry> base_list;
-	int size_of_db;
-	fin.read((char*)&size_of_db, sizeof(int));
-	for (int i = 0; i < size_of_db; ++i)
+	if (fin.is_open())
 	{
-		int emp_n;
-		char fn[100], ln[100];
-		fin.read((char*)&emp_n, sizeof(int));
-		fin.read((char*)&fn, 20);
-		fin.read((char*)&ln, 20);
-		entry form(emp_n, fn, ln);
-		base_list.push_back(form);
+		int size_of_db;
+		fin.read((char*)&size_of_db, sizeof(int));
+		for (int i = 0; i < size_of_db; ++i)
+		{
+			int emp_n;
+			char fn[100], ln[100];
+			fin.read((char*)&emp_n, sizeof(int));
+			fin.read((char*)&fn, 20);
+			fin.read((char*)&ln, 20);
+			entry form(emp_n, fn, ln);
+			base_list.push_back(form);
+		}
 	}
 	fin.close();
 	return base_list;
@@ -88,20 +91,23 @@ void save_to_file(list<entry> &DB)
 	
 	
 	ofstream fout("data_base1.txt", ios::binary);
-	int size_db = DB.size();
-	fout.write((char*)&size_db, sizeof(int));
-	auto itr = DB.begin();
-	for (; itr != DB.end(); ++itr)
+	if (fout.is_open())
 	{
-		int en;
-		char* fnm;
-		char* lnm;
-		en = itr->ret_emp_number();
-		fnm = itr->ret_fname();
-		lnm = itr->ret_lname();
-		fout.write((char*)&en, sizeof(int));
-		fout.write((char*)fnm, 20);
-		fout.write((char*)lnm, 20);
+		int size_db = DB.size();
+		fout.write((char*)&size_db, sizeof(int));
+		auto itr = DB.begin();
+		for (; itr != DB.end(); ++itr)
+		{
+			int en;
+			char* fnm;
+			char* lnm;
+			en = itr->ret_emp_number();
+			fnm = itr->ret_fname();
+			lnm = itr->ret_lname();
+			fout.write((char*)&en, sizeof(int));
+			fout.write((char*)fnm, 20);
+			fout.write((char*)lnm, 20);
+		}
 	}
 	fout.close();
 }
