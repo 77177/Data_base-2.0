@@ -7,8 +7,6 @@
 using namespace std;
 void equals(char out[20], char(&arto)[20])
 {
-
-
 	const int c_size = 20;
 	for (int i = 0; i < c_size; ++i)
 	{
@@ -28,8 +26,7 @@ public:
 	}
 	entry(int num, char o[20], char t[20])
 	{
-		
-		emp_number = num;
+         	emp_number = num;
 		equals(o, fname);
 		equals(t, lname);
 	}
@@ -55,16 +52,10 @@ public:
 	{
 		return emp_number;
 	}
-
 };
-
-
-
-
 
 list<entry> get_from_file()
 {
-	
 	ifstream fin("data_base1.txt", ios::binary );
 	list<entry> base_list;
 	if (fin.is_open())
@@ -84,12 +75,9 @@ list<entry> get_from_file()
 	}
 	fin.close();
 	return base_list;
-	
 }
 void save_to_file(list<entry> &DB)
 {
-	
-	
 	ofstream fout("data_base1.txt", ios::binary | ios::trunc);
 	try {
 		if (fout.is_open())
@@ -121,8 +109,7 @@ void save_to_file(list<entry> &DB)
 }
 int main()
 {
-	
-	list<entry> main;
+        list<entry> main;
 	string choice;
 	main = get_from_file();
 	cout << "/////////////////////////////" << endl;
@@ -203,15 +190,10 @@ int main()
 		}
 		else if (choice == "Exit")
 		{
-			
 			save_to_file(main);
-
 			cout << "Data saved to file" << endl;
-			
-			
 		}
 
 	} while (choice != "Exit");
-
 	return 0;
 }
